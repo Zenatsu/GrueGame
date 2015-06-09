@@ -1,6 +1,6 @@
 # GrueGame
 Unity 5 game to learn networking
 
-# Baller Contributers
-Zenatsu
-Hoizen
+# Baller Contributers:
+	Zenatsu
+	Hoizen
