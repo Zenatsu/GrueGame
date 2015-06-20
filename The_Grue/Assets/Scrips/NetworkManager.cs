@@ -33,6 +33,9 @@ public class NetworkManager : MonoBehaviour {
     {
         if (!Network.isClient && !Network.isServer)
         {
+
+            HostData[] data = MasterServer.PollHostList();
+
             if (GUI.Button(new Rect(100, 100, 250, 100), "Start Server"))
                 StartServer();
 
@@ -41,18 +44,40 @@ public class NetworkManager : MonoBehaviour {
 
             if(hostList != null)
             {
-                for(int i = 0 ; 1 < hostList.Length; i++)
-                {
-                    if (GUI.Button(new Rect(400, 100 + (110 * i), 300, 100), hostList[i].gameName))
-                        JoinServer(hostList[i]);
-
+                
+                foreach (var element in data)
+                {                            
+                    GUILayout.BeginArea(new Rect(400,100,300,50));
+                    GUILayout.BeginHorizontal();
+                    var name = element.gameName + " " + element.connectedPlayers + " / " + element.playerLimit;
+                    GUILayout.Label(name);
+                    GUILayout.Space(5);
+                    string hostInfo;
+                    hostInfo = "[";
+                    foreach (var host in element.ip)
+                        hostInfo = hostInfo + host + ":" + element.port + " ";
+                    hostInfo = hostInfo + "]";
+                    GUILayout.Label(hostInfo);
+                    GUILayout.Space(5);
+                    GUILayout.Label(element.comment);
+                    GUILayout.EndHorizontal();
+                    if (GUILayout.Button("Connect"))
+                    {
+                        // Connect to HostData struct, internally the correct method is used (GUID when using NAT).
+                        Network.Connect(element);
+                    }
+                    GUILayout.EndArea();
                 }
             }
+            
+            // Go through all the hosts in the host list
+            
         }
     }
 
     private void RefreshHostList()
     {
+        Debug.Log("Retreving Host List");
         MasterServer.RequestHostList(typeName);
     }
 

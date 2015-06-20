@@ -5,13 +5,22 @@ public class PlayerMovement : MonoBehaviour {
     float speed=0.33f;
     public bool grabTorch = false;
     int caseSwitch = 1;
+    GameObject main;
 
-	void Update () 
+    void Start()
     {
-        
+        main = GameObject.Find("MainController");
+    }
+    
+	void Update() 
+    {
         if(GetComponent<NetworkView>().isMine)
         {
-            InputMovement();
+            
+            if(main.GetComponent<GameOver>().isOver == false)
+            {
+                InputMovement();
+            }
         }
                   
 	}

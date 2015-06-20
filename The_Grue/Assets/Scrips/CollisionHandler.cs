@@ -28,7 +28,9 @@ public class CollisionHandler : MonoBehaviour {
             distance = Vector3.Distance(otherCollider.transform.position, this.transform.position);
             if (distance >= 1.98f)
             {
-                print("OH GOD THE HORROR!");
+                GameObject main = GameObject.Find("MainController");
+                main.GetComponent<GameOver>().EndGame();
+                //print("OH GOD THE HORROR!");
             }
         }
         
